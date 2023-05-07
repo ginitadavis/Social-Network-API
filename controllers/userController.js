@@ -22,6 +22,8 @@ module.exports = {
     getSingleUser(req, res) {
         User.findOne({ _id: req.params.userId })
             .select('-__v')
+            .populate('thoughts')
+            .populate('friends')
             .then(async (user) =>
                 !user
                     ? res.status(404).json({ message: 'No user with that ID' })
@@ -59,7 +61,6 @@ module.exports = {
 
     //Remove an user
     //TODO:Remove a friend from a user's friend list
-    //TODO:Am I deleting the thoughts correctly?
     deleteUser(req, res) {
         User.findOneAndDelete({ _id: req.params.userId })
             .then((user) =>
@@ -71,5 +72,15 @@ module.exports = {
             .catch((err) => res.status(500).json(err));
     },
 
+    addFriend(req, res){
+        User.findOneAndUpdate({_id: req.params.userId}, {$addToSet: {friends: req.params.friendsId}}, {new: true})
+        .then((user)=>{
+
+        })
+    },
+
+    removeFriend(req, res){
+        //db.users.updateOne( {_id:  ObjectId("651651651")} , { $pull: { hobbies: "Swimming" }})
+    }
 
 }
