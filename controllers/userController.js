@@ -17,8 +17,7 @@ module.exports = {
             });
     },
 
-    //Get a single user
-    //TODO:Need to also populate the user's thoughts and his friends
+    //Get a single user, including user's thoughts and his friends
     getSingleUser(req, res) {
         User.findOne({ _id: req.params.userId })
             .select('-__v')
@@ -46,7 +45,7 @@ module.exports = {
 
     //Update an user PUT
     updateUser(req, res){
-        User.finAndUpdate(
+        User.findOneAndUpdate(
             { _id: req.params.userId },
             { $set: req.body },
             {runValidators: true, new: true}
@@ -72,14 +71,36 @@ module.exports = {
             .catch((err) => res.status(500).json(err));
     },
 
-    addFriend(req, res){
-        User.findOneAndUpdate({_id: req.params.userId}, {$addToSet: {friends: req.params.friendsId}}, {new: true})
-        .then((user)=>{
+    async addFriend(req, res){
+        try{
+            const user = await User.findOneAndUpdate(
+                {_id: req.params.userId}, 
+                {$addToSet: {friends: req.body.friendsId}}, 
+                {new: true}
+            ).populate('friends');
+    
+            if (!user){
+                return res.status(404).json({message: 'User not found!'});
+            }
+            res.json(user);
 
-        })
+        }catch(err){
+            console.error(err);
+            res.status(500).json({message: 'Server error'});
+        }  
     },
 
-    removeFriend(req, res){
+    async removeFriend(req, res){
+        try{
+            const user = await User.updateOne(
+                {_id:req.params.userId},
+                {$pull: {friends: req.params.friendsId}},
+            )
+            res.json(user);
+
+        } catch(err){
+            res.status(500).json(err);
+        }
         //db.users.updateOne( {_id:  ObjectId("651651651")} , { $pull: { hobbies: "Swimming" }})
     }
 
