@@ -19,8 +19,6 @@ module.exports = {
         .catch((err) => res.status(500).json(err));
     },
 
-    //TODO: Need to check if this is correct, how do I assign this thought
-    //to a user?
     //Create a thought
     createThought(req, res) {
         Thought.create(req.body)
@@ -77,4 +75,40 @@ module.exports = {
         )
         .catch((err) => res.status(500).json(err));
     },
+
+    //Add a reaction to a thought
+    // /api/thoughts/:thoughtId/reactions
+    //reactionBody and username
+    async addReaction(req, res){
+        try{
+            const thought = await Thought.findOneAndUpdate(
+                {_id: req.params.thoughtId}, 
+                {$addToSet: {reactions: req.body}}, 
+                {new: true}
+            ).populate('reactions');
+    
+            if (!thought){
+                return res.status(404).json({message: 'Thought not found!'});
+            }
+            res.json(thought);
+
+        }catch(err){
+            console.error(err);
+            res.status(500).json({message: 'Server error'});
+        }  
+    },
+
+    //Delete reaction from a thought
+    async deleteReaction(req, res){
+        try{
+            const thought = await Thought.updateOne(
+                {_id:req.params.thoughtId},
+                {$pull: {reaction: req.params.reactionId}},
+            )
+            res.json(thought);
+
+        } catch(err){
+            res.status(500).json(err);
+        }
+    }
 };
