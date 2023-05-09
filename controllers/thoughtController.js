@@ -47,7 +47,7 @@ module.exports = {
                 {$pull: {thoughts: req.params.thoughtId}},
             )
             .then(() => {
-                res.json({user, message: "Thought successfully removed"});
+                res.json({message: "Thought successfully removed"});
             })
             .catch((err) => {
                 console.error(err);
@@ -99,11 +99,13 @@ module.exports = {
     },
 
     //Delete reaction from a thought
+    // /api/thoughts/:thoughtId/reactions/:_id
     async deleteReaction(req, res){
         try{
-            const thought = await Thought.updateOne(
+            const thought = await Thought.findOneAndUpdate(
                 {_id:req.params.thoughtId},
-                {$pull: {reaction: req.params.reactionId}},
+                {$pull: {reactions: {_id: req.params.reactionId}}},
+                {new: true}
             )
             res.json(thought);
 
