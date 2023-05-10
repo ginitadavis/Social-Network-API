@@ -2,6 +2,8 @@
 
 [MIT License](https://img.shields.io/badge/-MIT%20License-brightgreen)](https://www.mit.edu/~amini/LICENSE.md)
 
+
+
 # Description
 
 I developed an API for a social network web application where users can share their thoughts, react to friends' thoughts, and create a friend list. I used Express.js, Mongoose, and Javascript date library. This application is not deployed, below there is a video showing the functionality of this application using Insomnia. I learned how to use the MongoDB database, I was also able to keep practicing how to create and use routes. I also was able to keep learning how to test POST, DELETE, GET, and PUT in Insomnia.
@@ -21,15 +23,12 @@ I developed an API for a social network web application where users can share th
 
 I installed express, dotenv, mongoose, and nodemon as dependencies. 
 
-![alt text](assets/images/inquirer-screenshot.png)
-
 
 
 # Usage
 
-![alt text](assets/images/terminal-readme.png)
+Link to the walkthrough video that demonstrates the functionality of Social Network API using Insomnia [Click here to watch the video](https://drive.google.com/file/d/1gcfGYzMJixrxCY5e4eA6pwlgEFIhFLVi/view)
 
-Link to the walkthrough video that demonstrates the functionality of the README generator [Click here to watch the video](https://drive.google.com/file/d/1zGuKZzuoalbatS5zntjUP5z35saLKSWd/view)
 
 
 # Questions
